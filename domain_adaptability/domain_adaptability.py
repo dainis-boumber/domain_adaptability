@@ -730,7 +730,7 @@ class training:
       
         ACC = precision_score(y_true, y_pred, average='micro')   # compute the accuracy 
 
-        # print("acc is {A}".format(A = ACC))
+        print("acc is {A}".format(A = ACC))
  
         return ACC
 

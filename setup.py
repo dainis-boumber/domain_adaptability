@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
 	name = "domain_adaptability",
-	version = "1.35",
+	version = "1.36",
 	author = "Dainis Boumber",
 	author_email = "dainis.boumber@gmail.com",
 	description = ("Measuring domain adaptability in Python"),
