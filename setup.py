@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
 	name = "domain_adaptability",
-	version = "1.32",
+	version = "1.33",
 	author = "Dainis Boumber",
 	author_email = "dainis.boumber@gmail.com",
 	description = ("Measuring domain adaptability in Python"),
@@ -27,5 +27,5 @@ setup(
 			],
 	include_package_data=True,
 	long_description=read('README.md'),
-    long_description_content_type='text/markdown',
+    	long_description_content_type='text/markdown',
 	)
