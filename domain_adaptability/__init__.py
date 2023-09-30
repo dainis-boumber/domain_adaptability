@@ -1,1 +1,1 @@
-from .domain_adaptability import Similarity
+from .domain_adaptability import Adaptability
