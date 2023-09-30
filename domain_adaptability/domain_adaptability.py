@@ -7,10 +7,12 @@ import json
 import random
 import math
 import json
+import pandas as pd
 from pathlib import Path
 import numpy as np
 from cleantext import clean
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics import precision_score
 from scipy.stats import rankdata
 from scipy.stats import chisquare
 from scipy.stats import spearmanr
@@ -273,7 +275,7 @@ class Load(object):
             self.spaceless = True            
 
     #--------------------------------------------------
-    def load(self, data):
+    def load(self, data, feature="text"):
 
         #Initialize holder
         lines = []
@@ -297,31 +299,23 @@ class Load(object):
 
         #Load json file
         elif data.endswith(".json"):
-            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
-                for line in fo:
-                    line = json.loads(line)
-                    lines.append(line)
+            df = pd.read_json(data)
+            lines = df['text'].tolist()
 
         #Load jsonl file
         elif data.endswith(".jsonl"):
-            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
-                for line in fo:
-                    line = json.loads(line)
-                    lines.append(line)
+            df = pd.read_json(data, lines=True)
+            lines = df['text'].tolist()
 
         #Load csv file
         elif data.endswith(".csv"):
-            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
-                for line in fo:
-                    line = line.split(",")
-                    lines.append(line)
+            df = pd.read_csv(data)
+            lines = df['text'].tolist()
 
         #Load tsv file
         elif data.endswith(".tsv"):
-            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
-                for line in fo:
-                    line = line.split("\t")
-                    lines.append(line)
+            df = pd.read_csv(data, sep="\t")
+            lines = df['text'].tolist()
 
         #For each line, clean and prep
         new_lines = []
@@ -587,7 +581,7 @@ class training:
             fre_array2_N = fre_array2_N/corpusSize         
                     
             for i in range(fre_array_num1):
-                first_array = fre_array_N[i] 
+                first_array = fre_array1_N[i] 
                 
                 for j in range(fre_array_num2): 
                     second_array = fre_array2_N[j]
@@ -641,7 +635,7 @@ class training:
             avg_diff_regi = np.amax(diffRegi_mean_array)
 
         else:
-            avg_same_regi = np.amam(sameRegi_mean_array)  
+            avg_same_regi = np.amax(sameRegi_mean_array)  
             avg_diff_regi = np.amin(diffRegi_mean_array)
                
         mid_v_same_vs_diff = (avg_same_regi + avg_diff_regi)/2 
@@ -672,7 +666,7 @@ class training:
             for j in range(len_wordlist):
                   
                 if traind_wordlist[i] == wordlist[j]:
-                    test_fre_array_1[:, i] = test_fre_array_[:, j]
+                    test_fre_array_1[:, i] = test_fre_array[:, j]
                     break
                 if j == len_wordlist -1 :
                     test_fre_array_1[:, i] = 0      
@@ -687,15 +681,17 @@ class training:
     # stat_list_diff: is a list containing similarity values of a number of pair of corpora from different registers
     #
     # stat_list_same/stat_list_diff can be obtained by using the 'get_simi_values' function
-
-    # mid_v_same_vs_diff is a threshold value based on the training data, it can be calculated with 'train_simi_middlevalue' function  
+    #
+    # middle_v is a threshold value based on the training data, it can be calculated with 'train_simi_middlevalue' function  
+    #
+    # measure_type considers 4 measures:  "chi_square", "spearman", "cosine_dis", "euclidean_dis" but here only "spearman" is used
     #
     #---------------------------------------------------------------------
 
     
-    def get_ACC(self,  stat_list_same,  stat_list_diff, mid_v_same_vs_diff ):
+    def get_ACC(self,  stat_list_same,  stat_list_diff, middle_v, measure_type ):
 
-        test_list = same_regi_list + diff_regi_list
+        test_list = stat_list_same + stat_list_diff
 
 
         y_pred=[]    # 1: same registers    0: different registers
@@ -760,11 +756,11 @@ class training:
     
     def get_z_scores(self,  stat_list_same,  stat_list_diff ):
 
-        test_list = same_regi_list + diff_regi_list
+        test_list = stat_list_same + stat_list_diff
 
         z_score = stats.zscore(test_list)
 
-        homo_len = len(same_regi_list)
+        homo_len = len(stat_list_same)
 
         z_score_homo = z_score[0:homo_len]
         homo_mean, homo_var, homo_std = stats.bayes_mvs(z_score_homo)   # using Bayesian approach
