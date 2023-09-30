@@ -24,7 +24,7 @@ Recent work in *Lingua* has evaluated the measures used in this package extensiv
 
 # Input
 
-The **Similarity.calculate** method requires two input corpora. These can be:
+The **Adaptability.calculate** method requires two input corpora. These can be:
     
     - a list of strings
     - a filename of one of the following formats:
@@ -37,7 +37,7 @@ The **Similarity.calculate** method requires two input corpora. These can be:
 
 # Output
 
-The output is a scalar measure of how similar the two corpora are. The values fall between 0 (very different) and 1 (very similar). The values are consistent within languages, but not across languages. For example, Swedish has higher relative similarity than Estonian.
+The output is a scalar measure of how adaptable the two corpora are. The values fall between 0 (very different) and 1 (very adaptable). The values are consistent within languages, but not across languages. For example, Swedish has higher relative adaptability than Estonian.
 
 # Installation
 

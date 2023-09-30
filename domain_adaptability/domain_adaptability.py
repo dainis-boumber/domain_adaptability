@@ -193,7 +193,7 @@ if not os.path.isdir( OUT_OF_DOMAIN_PATH ) :
 N_FEATURES = "5k"
 
 #===============================================================================
-class Similarity(object):
+class Adaptability(object):
 
     def __init__(self, language, threshold = 1000000, feature_source = "out"):
 
