@@ -1,10 +1,12 @@
 import os
+import sys
 import codecs
 import gzip
 import re
 import json
 import random
 import math
+import json
 from pathlib import Path
 import numpy as np
 from cleantext import clean
@@ -291,6 +293,34 @@ class Load(object):
             with gzip.open(data, "r") as fo:
                 for line in fo:
                     line = line.decode("utf-8", errors = "replace")
+                    lines.append(line)
+
+        #Load json file
+        elif data.endswith(".json"):
+            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
+                for line in fo:
+                    line = json.loads(line)
+                    lines.append(line)
+
+        #Load jsonl file
+        elif data.endswith(".jsonl"):
+            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
+                for line in fo:
+                    line = json.loads(line)
+                    lines.append(line)
+
+        #Load csv file
+        elif data.endswith(".csv"):
+            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
+                for line in fo:
+                    line = line.split(",")
+                    lines.append(line)
+
+        #Load tsv file
+        elif data.endswith(".tsv"):
+            with codecs.open(data, "r", encoding = "utf-8", errors = "replace") as fo:
+                for line in fo:
+                    line = line.split("\t")
                     lines.append(line)
 
         #For each line, clean and prep

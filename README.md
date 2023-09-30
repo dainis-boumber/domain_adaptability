@@ -1,17 +1,39 @@
-# corpus_similarity
+# Domain Adaptability
 
 Measure the similarity between two corpora (text datasets). The measures work best when each corpus is at least 10k words. This package support 74 languages.
 
-    from corpus_similarity import Similarity
-    cs = Similarity(language = "eng")
+    from domain_adaptability import Adaptability
+    cs = Adaptability(language = "eng")
 
     result = cs.calculate(corpus1, corpus2)
 
 The package contains all preprocessing and training. Only the language needs to be specified. A list of supported languages is provided below.
 
+# Authors
+
+Dainis Boumber @ ReDAS Laboratory
+
+# Attributions 
+
+Domain Adaptability module is derived from the [Corpus Similarity repository](https://github.com/jonathandunn/corpus_similarity.git), 
+a project by Jonathan Dunn, Haipeng Li, Damian Sastre.
+
+Corpus Similarity builds on top of the corpus similarity measure is a simple character n-gram comparison, with the best performance coming with using Spearman's Rho as a measure of correlation. The original idea for this kind of corpus comparison comes from Adam Kilgarriff (https://kilgarriff.co.uk/Publications/2001-K-CompCorpIJCL.pdf). 
+
+Recent work in *Lingua* has evaluated the measures used in this package extensively in a multi-lingual setting (https://arxiv.org/abs/2206.04332). These measures have since been used to model the relationship between registers in a multi-lingual setting (https://arxiv.org/abs/2209.09813) and to validate geo-referenced corpus collections (https://arxiv.org/abs/2104.01294). Other work has modelled the relationship between corpus similarity (upstream) and embedding similarity (downstream) (https://arxiv.org/abs/2206.04330). These papers provide further details for the theory and evaluation behind this package.
+
 # Input
 
-The **Similarity.calculate** method requires two input corpora. These can be a list of strings or a filename (supports .txt and .gz files).
+The **Similarity.calculate** method requires two input corpora. These can be:
+    
+    - a list of strings
+    - a filename of one of the following formats:
+        - .txt
+        - .gz
+        - .json
+        - .jsonl
+        - .csv
+    - a dataset of the huggingface/datasets library
 
 # Output
 
@@ -19,15 +41,9 @@ The output is a scalar measure of how similar the two corpora are. The values fa
 
 # Installation
 
-    pip install corpus_similarity
+    pip install domain_adaptability
 
-    pip install git+https://github.com/jonathandunn/corpus_similarity.git
-    
-# How It Works
-
-The corpus similarity measure is a simple character n-gram comparison, with the best performance coming with using Spearman's Rho as a measure of correlation. The original idea for this kind of corpus comparison comes from Adam Kilgarriff (https://kilgarriff.co.uk/Publications/2001-K-CompCorpIJCL.pdf). 
-
-Recent work in *Lingua* has evaluated the measures used in this package extensively in a multi-lingual setting (https://arxiv.org/abs/2206.04332). These measures have since been used to model the relationship between registers in a multi-lingual setting (https://arxiv.org/abs/2209.09813) and to validate geo-referenced corpus collections (https://arxiv.org/abs/2104.01294). Other work has modelled the relationship between corpus similarity (upstream) and embedding similarity (downstream) (https://arxiv.org/abs/2206.04330). These papers provide further details for the theory and evaluation behind this package.
+    pip install git+https://github.com/dainis-boumber/domain_adaptability.git
     
 # Languages
 
